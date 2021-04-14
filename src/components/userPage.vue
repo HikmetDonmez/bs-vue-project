@@ -263,14 +263,14 @@ import {
           {
            firstName: 'Canberk',
            lastName: 'Ateş',
-           age: 23,
+           age: 21,
            email: 'canberkAtes@gmail.com',
            companyName:'Innovile'
           },
           {
            firstName: 'Barış',
            lastName: 'Elvanoğlu',
-           age: 23,
+           age: 27,
            email: 'barisElvanoglu@gmail.com',
            companyName:'Innovile'
           },
@@ -333,9 +333,22 @@ import {
         })
       },
       
+      
+      // duplicateCheck (editedUser) {
+      //    this.users.forEach(e => {
+      //      if(e.firstName == editedUser.firstName &&  e.lastName == editedUser.lastName && e.email == editedUser.email)
+      //      {
+      //        return false;
+      //      }
+      //      else {
+      //        return true;
+      //      }
+      //    }); 
+      // },
+
       save () {
           this.$v.$touch();
-
+      
       if (!this.$v.$invalid) {
          if (this.editedIndex > -1) {
           Object.assign(this.users[this.editedIndex], this.editedUser)
