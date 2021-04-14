@@ -48,6 +48,7 @@
                       v-model="editedUser.firstName"
                       label="First Name"
                     ></v-text-field>
+                    <span v-if="!$v.editedUser.firstName.required && $v.editedUser.firstName.$dirty" class="text-danger">First Name is required!</span>
                   </v-col>
                   <v-col
                     cols="12"
@@ -58,6 +59,7 @@
                       v-model="editedUser.lastName"
                       label="Last Name"
                     ></v-text-field>
+                    <span v-if="!$v.editedUser.lastName.required && $v.editedUser.lastName.$dirty" class="text-danger">Last name is required!</span>
                   </v-col>
                   <v-col
                     cols="12"
@@ -78,6 +80,9 @@
                       v-model="editedUser.email"
                       label="Email"
                     ></v-text-field>
+                    <span
+                           v-if="(!$v.editedUser.email.required || !$v.editedUser.email.email) && $v.editedUser.email.$dirty"
+                           class="text-danger">Valid Email is required!</span>
                   </v-col>
                   <v-col
                     cols="12"
@@ -88,6 +93,7 @@
                       v-model="editedUser.companyName"
                       label="Company Name"
                     ></v-text-field>
+                    <span v-if="!$v.editedUser.companyName.required && $v.editedUser.companyName.$dirty" class="text-danger">Company Name is required!</span>
                   </v-col>
                 </v-row>
               </v-container>
@@ -163,6 +169,10 @@
 
 
 <script>
+import {
+  required,
+  email
+} from "vuelidate/lib/validators";
 
   export default {
     data: () => ({
@@ -203,6 +213,24 @@
         companyName:''
       },
     }),
+   validations: 
+   {
+        editedUser: {
+            firstName: {
+                  required
+                },
+            lastName: {
+                required
+                },   
+            email: {
+                  required,
+                  email
+                },
+            companyName: {
+                  required,
+                }
+                    }
+    },
     computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'New User' : 'Edit User'
@@ -304,9 +332,22 @@
           this.editedIndex = -1
         })
       },
-
+      
       save () {
-        
+          this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+         if (this.editedIndex > -1) {
+          Object.assign(this.users[this.editedIndex], this.editedUser)
+            this.snackbar = true;
+            this.snackbarText = `User edited successfully`
+        } else {
+          this.users.push(this.editedUser)
+          this.snackbar = true;
+          this.snackbarText = `User added successfully`
+        }
+        this.close()
+      }  
       },
     },
   }
